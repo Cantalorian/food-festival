@@ -1,5 +1,4 @@
-$(document).ready(function() {
-  function createEl(htmlString, attrs, ...children) {
+const createEl = function (htmlString, attrs, ...children) {
     if (typeof htmlString !== "string") {
       throw Error("Argument 'htmlString' is required and must be a string");
     }
@@ -10,6 +9,10 @@ $(document).ready(function() {
       for (let key in attrs) {
         if (key.substring(0, 2) === "on") {
           el.addEventListener(key.substring(2).toLowerCase(), attrs[key]);
+        } else if (key === 'style') {
+          for (let rule in attrs[key]) {
+            el.style[rule] = attrs[key][rule];
+          }
         } else {
           el.setAttribute(key, attrs[key]);
         }
@@ -29,7 +32,6 @@ $(document).ready(function() {
     });
   
     return el;
-  };
-});
+};
 
 module.exports = createEl;
